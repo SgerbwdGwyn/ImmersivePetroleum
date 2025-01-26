@@ -25,13 +25,17 @@ repositories {
 	maven {	name = "BlameJared";	url = "https://maven.blamejared.com/" }			// IE & CT Files
 	maven { name = "DVS1 Maven FS"; url = "https://dvs1.progwml6.com/files/maven" }	// JEI & Tinkers Files
 	maven { name = "CurseMaven";	url = 'https://cfa2.cursemaven.com' }			// Needed for PNC
-	maven { // CC-Tweaked
-		url 'https://squiddev.cc/maven/'
-		content {
-			includeGroup 'org.squiddev'
+//	maven { // CC-Tweaked
+//		url 'https://squiddev.cc/maven/'
+//		content {
+//			includeGroup 'org.squiddev'
+//		}
+	//}
+		maven {
+			url "https://maven.squiddev.cc"
+			content { includeGroup("cc.tweaked") }
 		}
-	}
-	
+
 	flatDir { dirs 'flatdir' }
 }
 
@@ -53,7 +57,9 @@ sourceSets {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: version_parchment
+	//mappings channel: 'parchment', version: version_parchment
+	mappings channel: 'parchment', version: "$version_parchment-$version_minecraft"
+
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	
 	runs {
@@ -129,8 +135,11 @@ dependencies {
 	runtimeOnly fg.deobf("mezz.jei:jei-${version_minecraft}-forge:${version_jei}")
 	compileOnly fg.deobf("mezz.jei:jei-${version_minecraft}-forge-api:${version_jei}")
 	compileOnly fg.deobf("mezz.jei:jei-${version_minecraft}-common-api:${version_jei}")
-	
-    compileOnly fg.deobf("org.squiddev:cc-tweaked-${version_minecraft}:${version_cctweaked}")
+
+    //compileOnly fg.deobf("org.squiddev:cc-tweaked-${version_minecraft}:${version_cctweaked}")
+	compileOnly("cc.tweaked:cc-tweaked-1.20.1-core-api:1.114.3")
+	compileOnly(fg.deobf("cc.tweaked:cc-tweaked-1.20.1-forge-api:1.114.3"))
+	runtimeOnly(fg.deobf("cc.tweaked:cc-tweaked-1.20.1-forge:1.114.3"))
 }
 
 def customGradle = rootProject.file('custom.gradle');
